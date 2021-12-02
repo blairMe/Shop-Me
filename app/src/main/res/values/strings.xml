@@ -20,8 +20,20 @@
     <string name="register_acc_button">Register</string>
     <string name="have_account">Already have an Account?</string>
     <string name="signin_button">Signin</string>
+
+    <!--Bottom Nav menu -->
+    <string name="homeName">Home</string>
+    <string name="productsName">Products</string>
+    <string name="ordersName">Orders</string>
+    <string name="soldProductsName">Sold Products</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_shop_nav">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 
 </resources>

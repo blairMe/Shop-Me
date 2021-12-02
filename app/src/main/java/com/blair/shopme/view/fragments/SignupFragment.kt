@@ -1,5 +1,6 @@
 package com.blair.shopme.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.blair.shopme.R
 import com.blair.shopme.databinding.FragmentSignupBinding
+import com.blair.shopme.view.activities.MainActivity
+import com.blair.shopme.view.activities.ShopNavActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -50,7 +53,9 @@ class SignupFragment : Fragment() {
         //checks if user is already signed in
         val currentUser = auth.currentUser
         if(currentUser != null) {
-            findNavController().navigate(R.id.action_signupFragment_to_homeFragment)
+            //Checking if user is already signed in
+            val intent = Intent(requireContext(), ShopNavActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -83,7 +88,9 @@ class SignupFragment : Fragment() {
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                         val user = auth.currentUser
                         updateUI(user)
-                        findNavController().navigate(R.id.action_signupFragment_to_homeFragment)
+                        //Checking if user is already signed in
+                        val intent = Intent(requireContext(), ShopNavActivity::class.java)
+                            startActivity(intent)
                     } else {
                         Log.d("Fail", "Failed to create user")
                         Toast.makeText(requireContext(), "Failed to create user, please try again", Toast.LENGTH_SHORT).show()

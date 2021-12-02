@@ -1,5 +1,6 @@
 package com.blair.shopme.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,9 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.blair.shopme.R
 import com.blair.shopme.databinding.FragmentLoginBinding
+import com.blair.shopme.view.activities.MainActivity
+import com.blair.shopme.view.activities.ShopNavActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -38,20 +43,32 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        //checks if user is already signed in
+        val currentUser = auth.currentUser
+        if(currentUser != null) {
+            //Checking if user is already signed in
+            val intent = Intent(requireContext(), ShopNavActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //firebase
         auth = Firebase.auth
 
-        //Checking if user is already signed in
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-        }
-
         //firebase signin
         signinUser()
+
+        //Checking if user is already signed in
+        /*val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(requireContext(), ShopNavActivity::class.java)
+            startActivity(intent)
+        }*/
 
         //Going to register screen
         val buttonMove = binding.buttonRegister
@@ -73,7 +90,9 @@ class LoginFragment : Fragment() {
                         Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                         val user = auth.currentUser
                         updateUI(user)
-                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                        val intent = Intent(requireContext(), ShopNavActivity::class.java)
+                        startActivity(intent)
+                        //findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     } else {
                         updateUI(null)
                         Log.i("Retry", "Please try to login again")
