@@ -34,3 +34,16 @@ class ShopNavActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 }
+
+//hiding bottom navigation
+/*fun hideBottomNavigation() {
+    //mBinding.navigationView.clearAnimation()
+    //mBinding.navigationView.animate().translationY(mBinding.navigationView.height.toFloat()).duration = 300
+    mBinding.navigationView.visibility = View.GONE
+}*/
+
+/*fun showBottomNavigation() {
+    //mBinding.navigationView.clearAnimation()
+    //mBinding.navigationView.animate().translationY(0f).duration = 300
+    mBinding.navigationView.visibility = View.VISIBLE
+}*/

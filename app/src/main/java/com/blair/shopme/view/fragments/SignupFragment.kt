@@ -1,6 +1,7 @@
 package com.blair.shopme.view.fragments
 
 import android.content.Intent
+import android.graphics.Insets.add
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import com.blair.shopme.view.activities.ShopNavActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class SignupFragment : Fragment() {
@@ -27,8 +29,11 @@ class SignupFragment : Fragment() {
     //viewBinding
     private lateinit var binding : FragmentSignupBinding
 
-    //firebase
+    //firebase authentication
     private lateinit var auth : FirebaseAuth
+
+    //firestore
+    private val db = Firebase.firestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +91,7 @@ class SignupFragment : Fragment() {
                     if(task.isSuccessful) {
                         Log.d("Success", "Signup Successful")
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                        sendingToDatabase()
                         val user = auth.currentUser
                         updateUI(user)
                         //Checking if user is already signed in
@@ -100,10 +106,42 @@ class SignupFragment : Fragment() {
         }
     }
 
+    //sending user details to firestore database
+    fun sendingToDatabase() {
+        val userId = Firebase.auth.uid
+        val firstUserName = binding.signupFirstName.text
+        val secondUserName = binding.signupSecondName.text
+        val userEmailAd = binding.userSignupEmail.text
+        val userPassword = binding.userSignupPassword.text
+
+
+        //creating the user
+        val user = hashMapOf(
+            "userId" to userId.toString(),
+            "firstName" to firstUserName.toString(),
+            "secondName" to secondUserName.toString(),
+            "userEmail" to userEmailAd.toString(),
+            "userPassword" to userPassword.toString()
+        )
+
+
+
+        //Adding document with generated id
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Success Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+                Toast.makeText(requireContext(), "Success adding to firestore", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore no success", "Error adding document", e)
+                Toast.makeText(requireContext(), "Not successful adding to firestore", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     private fun updateUI(user: FirebaseUser?) {
 
     }
 
-
-
 }
+
