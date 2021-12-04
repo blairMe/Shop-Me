@@ -1,5 +1,6 @@
 package com.blair.shopme.view.fragments
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -63,14 +64,7 @@ class LoginFragment : Fragment() {
         //firebase signin
         signinUser()
 
-        //Checking if user is already signed in
-        /*val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val intent = Intent(requireContext(), ShopNavActivity::class.java)
-            startActivity(intent)
-        }*/
-
-        //Going to register screen
+                //Going to register screen
         val buttonMove = binding.buttonRegister
         buttonMove.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signupFragment)
@@ -83,6 +77,12 @@ class LoginFragment : Fragment() {
         val loginButton = view?.findViewById<Button>(R.id.buttonLogin)
 
         loginButton!!.setOnClickListener {
+            //show loading dialog
+            val signinProgressDialog = Dialog(requireContext())
+            signinProgressDialog.setContentView(R.layout.loader_dialog)
+            signinProgressDialog.show()
+
+            //authentication
             auth.signInWithEmailAndPassword(userEmail.toString(), userPassword.toString())
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
@@ -92,8 +92,8 @@ class LoginFragment : Fragment() {
                         updateUI(user)
                         val intent = Intent(requireContext(), ShopNavActivity::class.java)
                         startActivity(intent)
-                        //findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     } else {
+                        signinProgressDialog.dismiss()
                         updateUI(null)
                         Log.i("Retry", "Please try to login again")
                     }

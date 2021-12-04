@@ -1,5 +1,6 @@
 package com.blair.shopme.view.fragments
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Insets.add
 import android.os.Bundle
@@ -86,11 +87,17 @@ class SignupFragment : Fragment() {
         val buttonRegister = view?.findViewById<Button>(R.id.registerMe)
 
         buttonRegister!!.setOnClickListener {
+            //display loading dialog box
+            val signupProgressDialog = Dialog(requireContext())
+            signupProgressDialog.setContentView(R.layout.loader_dialog)
+            signupProgressDialog.show()
+
             auth.createUserWithEmailAndPassword(email.toString(), password.toString())
                 .addOnCompleteListener(requireActivity()) { task ->
                     if(task.isSuccessful) {
                         Log.d("Success", "Signup Successful")
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                        //sending details to firestore
                         sendingToDatabase()
                         val user = auth.currentUser
                         updateUI(user)
@@ -98,6 +105,7 @@ class SignupFragment : Fragment() {
                         val intent = Intent(requireContext(), ShopNavActivity::class.java)
                             startActivity(intent)
                     } else {
+                        signupProgressDialog.dismiss()
                         Log.d("Fail", "Failed to create user")
                         Toast.makeText(requireContext(), "Failed to create user, please try again", Toast.LENGTH_SHORT).show()
                         updateUI(null)
@@ -123,8 +131,6 @@ class SignupFragment : Fragment() {
             "userEmail" to userEmailAd.toString(),
             "userPassword" to userPassword.toString()
         )
-
-
 
         //Adding document with generated id
         db.collection("users")
