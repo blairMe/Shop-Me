@@ -33,5 +33,23 @@
     <!--Loader Message-->
     <string name="loader_dialog_text">Please Wait</string>
 
+    <!--New Product Fragment -->
+    <string name="new_product_fragment_title">New Product</string>
+    <string name="product_name_hint">Product Name</string>
+    <string name="product_price_hint">Product Price</string>
+    <string name="product_description_hint">Product Description</string>
+    <string name="product_quantity_hint">Product Quantity</string>
+    <string name="btn_post_product">Post Product</string>
+
+    <!--Select Image Fragment -->
+    <string name="select_image_text">Select picture</string>
+    <string name="select_camera">Camera</string>
+    <string name="select_gallery">Gallery</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 
 </resources>

@@ -1,10 +1,12 @@
 package com.blair.shopme.view.activities
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.blair.shopme.R
@@ -33,8 +35,30 @@ class ShopNavActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         //navView.setupWithNavController(navController)
         binding.navView.setupWithNavController(navController)
+
+
+        //hiding bottom navigation in new products fragment
+        navController.addOnDestinationChangedListener{ _, destination, _ ->
+            if(destination.id == R.id.newProductFragment) {
+                binding.navView.visibility = View.GONE
+            }
+            else {
+                binding.navView.visibility = View.VISIBLE
+            }
+        }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_shop_nav)
+        return NavigationUI.navigateUp(navController, null)
+        // super.onSupportNavigateUp()
+    }
+
+
+
 }
+
+
 
 //hiding bottom navigation
 /*fun hideBottomNavigation() {
